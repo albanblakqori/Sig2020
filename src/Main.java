@@ -14,21 +14,28 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(KeyGenerator.lokacioni);
+        String delcomm = "delete";
+        String comm = "delete";
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         String privateloc = "RSA\\"+s+".xml";
         String publicloc = "RSA\\"+s+".pub.xml";
-        System.out.println(KeyGenerator.lokacioni + privateloc);
-        System.out.println(KeyGenerator.lokacioni + publicloc);
+        if(comm == delcomm){
+            new DeleteKey(privateloc,"privat");
+            new DeleteKey(publicloc,"publik");
+        }else{
+            KeyPair keyPair = KeyGenerator.createKeyPair(1024);
+            PrivateKey privateKey = keyPair.getPrivate();
+            PublicKey publicKey = keyPair.getPublic();
+            String privateKeyAsXml = KeyGenerator.getPrivateKeyAsXml(privateKey);
+            KeyGenerator.writeFile(privateKeyAsXml,privateloc);
+            String publicKeyAsXml = KeyGenerator.getPublicKeyAsXml(publicKey);
+            KeyGenerator.writeFile(publicKeyAsXml,publicloc);
 
-         KeyPair keyPair = KeyGenerator.createKeyPair(1024);
-         PrivateKey privateKey = keyPair.getPrivate();
-         PublicKey publicKey = keyPair.getPublic();
-         String privateKeyAsXml = KeyGenerator.getPrivateKeyAsXml(privateKey);
-         KeyGenerator.writeFile(privateKeyAsXml,privateloc);
-         String publicKeyAsXml = KeyGenerator.getPublicKeyAsXml(publicKey);
-         KeyGenerator.writeFile(publicKeyAsXml,publicloc);
+        }
+
+
+
 
 
 

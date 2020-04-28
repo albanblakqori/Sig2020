@@ -102,13 +102,13 @@ public class KeyGenerator {
 
 
          boolean ekziston = fileFound(lokacioni + filename);
-         System.out.println(ekziston);
+
             if(ekziston == true){
-                System.out.println(filename + "Ekziston paraprakisht");
+                System.out.println(filename + " Ekziston paraprakisht");
             }else if(ekziston == false){
                 PrintWriter writer = new PrintWriter(filename);
                 writer.write(text);
-                System.out.println(filename + "Eshte regjistruar");
+                System.out.println(filename + " Eshte regjistruar");
                 writer.flush();
                 writer.close();
 

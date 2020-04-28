@@ -15,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         String delcomm = "delete";
-        String comm = "delete";
+        String comm = "create";
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         String privateloc = "RSA\\"+s+".xml";
@@ -23,7 +23,7 @@ public class Main {
         if(comm == delcomm){
             new DeleteKey(privateloc,"privat");
             new DeleteKey(publicloc,"publik");
-        }else{
+        }else if(comm == "create"){
             KeyPair keyPair = KeyGenerator.createKeyPair(1024);
             PrivateKey privateKey = keyPair.getPrivate();
             PublicKey publicKey = keyPair.getPublic();

@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.Buffer;
 import java.security.*;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
@@ -15,6 +16,7 @@ import java.io.StringWriter;
 public class KeyGenerator {
     static final String KEY_ALGORITHM = "RSA";
     static final int KEY_LENGTH = 1024;
+    public static String lokacioni = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
 
 
 
@@ -96,9 +98,32 @@ public class KeyGenerator {
         return bytes;
     }
     static void writeFile(String text, String filename) throws Exception{
-        try(PrintWriter writer = new PrintWriter(filename)){
-            writer.write(text);
+
+
+
+         boolean ekziston = fileFound(lokacioni + filename);
+         System.out.println(ekziston);
+            if(ekziston == true){
+                System.out.println(filename + "Ekziston paraprakisht");
+            }else if(ekziston == false){
+                PrintWriter writer = new PrintWriter(filename);
+                writer.write(text);
+                System.out.println(filename + "Eshte regjistruar");
+                writer.flush();
+                writer.close();
+
+            }else{
+                System.out.println("wtf is happening");
+            }
+
+    }
+    public static boolean fileFound(String fileName){
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(fileName));
+        }catch(FileNotFoundException e){
+            return  false;
         }
+        return true;
     }
 
 

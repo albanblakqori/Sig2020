@@ -72,14 +72,11 @@ public class ImportKey {
 
 
     public static String privateKeyString(String privateKey){
-
         privateKey = privateKey.replaceAll("-----BEGIN PRIVATE KEY-----","");
 
         privateKey = privateKey.replaceAll("-----END PRIVATE KEY-----","");
 
         return privateKey;
-
-
     }
 
 
@@ -102,7 +99,7 @@ public class ImportKey {
         PublicKey publicKey = kf.generatePublic(publicKeySpec);
         byte[] pubkeyencoded = publicKey.getEncoded();
         String publicKeyString = Base64.getMimeEncoder().encodeToString(pubkeyencoded);
-        publicKeyString = "-----BEGIN PUBLIC KEY-----\n" + publicKeyString + "\n-----END PUBLIC KEY-----";
+        publicKeyString = "-----BEGIN PUBLIC KEY-----\n" + publicKeyString + "\n" +"-----END PUBLIC KEY-----";
         return  publicKeyString;
     }
 

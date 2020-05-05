@@ -37,9 +37,10 @@ public class Main {
 
     public static void main(String[] args) throws Exception, FileNotFoundException,InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
-        String comm = "import-key";
+        String comm = "write";
         String type = "private";
-        String  imp_path = "C:\\Users\\Hp\\Desktop\\toimportfrom\\f.pem";
+        String marresi = "alban";
+        String  imp_path = "C:\\Users\\Hp\\Desktop\\toimportfrom\\albani_importuar.pem";
         String imp_emri = "albani_importuar";
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
@@ -80,7 +81,9 @@ public class Main {
 
             ImportKey.move(isprivate,imp_path,imp_emri);
 
+        }else if(comm == "write"){
 
+            System.out.println(Write.write(marresi,"Hello Firend"));
 
 
 

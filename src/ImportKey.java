@@ -57,18 +57,21 @@ public class ImportKey {
 
    public static void move(boolean privatekey,String pathi,String emri) throws NoSuchAlgorithmException,InvalidKeySpecException,java.lang.Exception,IOException{
 
-        Path result  = Files.move(Paths.get(pathi), Paths.get(destination + emri)); ;
-       if(privatekey == true) {
-            emri = emri.replaceAll(".pem","");
-            emri =  emri + ".pub.pem";
+            Path result  = Files.move(Paths.get(pathi), Paths.get(destination + emri)); ;
+            if(privatekey == true) {
+                emri = emri.replaceAll(".pem","");
+                emri =  emri + ".pub.pem";
 
-           String onlyPrivateKey = privateKeyString(teksti_fajllit);
-           byte[] privateKeyByte = privateKeyByte(onlyPrivateKey);
-           String publicKeyString = publicKey(privateKeyByte);
-           KeyGenerator.writeFile(publicKeyString,    emri);
+                String onlyPrivateKey = privateKeyString(teksti_fajllit);
+                byte[] privateKeyByte = privateKeyByte(onlyPrivateKey);
+                String publicKeyString = publicKey(privateKeyByte);
+                KeyGenerator.writeFile(publicKeyString,    emri);
+
+            }
 
 
-           }
+
+
 
 
    }

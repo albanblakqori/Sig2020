@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -39,41 +40,76 @@ public class Main {
                 String type = args[1];
                 String nameToExport = args[2];
                 System.out.println(type);
-                if(type.equals("publik")){
-                    String pubKeyLoc = "RSA\\" + nameToExport + ".pub.pem";
-                    new ExportKey(pubKeyLoc);
-                }else if(type.equals("privat")){
-                    String privKeyLoc = "RSA\\" + nameToExport + ".pem";
-                    new ExportKey(privKeyLoc);
-                }else{
-                    System.out.println("something went wrong");
+
+                try{
+                    if(type.equals("publik")){
+                        String pubKeyLoc = "RSA\\" + nameToExport + ".pub.pem";
+                        new ExportKey(pubKeyLoc);
+                    }else if(type.equals("privat")){
+                        String privKeyLoc = "RSA\\" + nameToExport + ".pem";
+                        new ExportKey(privKeyLoc);
+                    }
+                }catch (IOException e){
+                    System.out.println("gabim celesi nuk ekziston");
+                }catch(ArrayIndexOutOfBoundsException e){
+                    System.out.println("Numri i argumenteve eshte gabim");
                 }
+
+
+
                 break;
             case "import-key":
-                String nameToSave = args[1];
-                String fromWhere = args[2];
-                boolean isPrivate = ImportKey.checkPrivateKey(fromWhere);
-                String celesi = ImportKey.teksti_fajllit;
-                if(isPrivate != true){
-                    nameToSave = "RSA\\" + nameToSave + ".pub.pem";
 
-                }else if(isPrivate == true){
-                    nameToSave =  "RSA\\" + nameToSave + ".pem";
+                try{
+
+                    String nameToSave = args[1];
+                    String fromWhere = args[2];
+                    boolean isPrivate = ImportKey.checkPrivateKey(fromWhere);
+                    String celesi = ImportKey.teksti_fajllit;
+                    if(isPrivate != true){
+                        nameToSave = "RSA\\" + nameToSave + ".pub.pem";
+
+                    }else if(isPrivate == true){
+                        nameToSave =  "RSA\\" + nameToSave + ".pem";
+                    }
+                    ImportKey.move(isPrivate,fromWhere,nameToSave);
+                }catch (IOException e){
+                    System.out.println("Celesi nuk ekziston");
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabimi ne argumente");
                 }
-                ImportKey.move(isPrivate,fromWhere,nameToSave);
+
                 break;
             case "write-message":
-                String marresi = args[1];
-                String msg = args[2];
-                System.out.println(Write.write(marresi,msg));
+                try{
+                    String marresi = args[1];
+                    String msg = args[2];
+                    System.out.println(Write.write(marresi,msg));
+                }catch (IOException e){
+                    System.out.println("Gabim celesi nuk ekziston");
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabim ne argumente");
+                }
+
                 break;
             case "read-message":
-                String encryptedMSg = args[1];
-                Read obj = new Read(encryptedMSg);
-                PrivateKey pk = obj.privateKey(obj.name);
-                byte[] celesiSekret = obj.decodeRSA(pk,obj.encryptedKey);
-                String decodeDes = obj.decryptDes(celesiSekret,obj.msg1);
-                obj.printAll(decodeDes);
+                try{
+                    String encryptedMSg = args[1];
+                    Read obj = new Read(encryptedMSg);
+                    String emri = obj.name;
+                    PrivateKey pk = obj.privateKey(obj.name);
+                    byte[] celesiSekret = obj.decodeRSA(pk,obj.encryptedKey);
+                    String decodeDes = obj.decryptDes(celesiSekret,obj.msg1);
+                    obj.printAll(decodeDes);
+                }catch (IOException e){
+                    System.out.println("Gabim celesi nuk ekziston" );
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabim ne argumenet");
+                }
+
+               break;
+            default:
+                System.out.println("Komanda nuk ekziston");
         }
 
 

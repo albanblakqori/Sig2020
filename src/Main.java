@@ -42,10 +42,10 @@ public class Main {
                 System.out.println(type);
 
                 try{
-                    if(type.equals("publik")){
+                    if(type.equals("public")){
                         String pubKeyLoc = "RSA\\" + nameToExport + ".pub.pem";
                         new ExportKey(pubKeyLoc);
-                    }else if(type.equals("privat")){
+                    }else if(type.equals("private")){
                         String privKeyLoc = "RSA\\" + nameToExport + ".pem";
                         new ExportKey(privKeyLoc);
                     }

@@ -1,4 +1,6 @@
-import sun.security.rsa.RSAPrivateCrtKeyImpl;
+
+
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +13,7 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
@@ -21,7 +24,7 @@ import java.util.Base64;
 public class ImportKey {
     public static String teksti_fajllit;
 
-    public static String destination = "RSA\\";
+    public static String destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
 
 
 
@@ -53,7 +56,8 @@ public class ImportKey {
 
 
    public static void move(boolean privatekey,String pathi,String emri) throws NoSuchAlgorithmException,InvalidKeySpecException,java.lang.Exception,IOException{
-        Path result =result = Files.move(Paths.get(pathi), Paths.get(destination + emri)); ;
+
+        Path result  = Files.move(Paths.get(pathi), Paths.get(destination + emri)); ;
        if(privatekey == true) {
             emri = emri.replaceAll(".pem","");
             emri =  emri + ".pub.pem";
@@ -61,7 +65,7 @@ public class ImportKey {
            String onlyPrivateKey = privateKeyString(teksti_fajllit);
            byte[] privateKeyByte = privateKeyByte(onlyPrivateKey);
            String publicKeyString = publicKey(privateKeyByte);
-           KeyGenerator.writeFile(publicKeyString,destination + emri);
+           KeyGenerator.writeFile(publicKeyString,    emri);
 
 
            }
@@ -94,7 +98,7 @@ public class ImportKey {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyByte);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PrivateKey privateKey1 = kf.generatePrivate(keySpec);
-        RSAPrivateCrtKeyImpl privk = (RSAPrivateCrtKeyImpl) privateKey1;
+        RSAPrivateCrtKey privk = (RSAPrivateCrtKey) privateKey1;
         RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(privk.getModulus(),privk.getPublicExponent());
         PublicKey publicKey = kf.generatePublic(publicKeySpec);
         byte[] pubkeyencoded = publicKey.getEncoded();

@@ -15,6 +15,7 @@ public class Read {
     byte[] encryptedKey;
     byte[] msg1;
     String privateKeyPath;
+    String destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
 
     public Read(String ms) throws UnsupportedEncodingException {
         String[] parts = ms.split("\\.");
@@ -64,7 +65,7 @@ public class Read {
     }
 
     public PrivateKey privateKey(String pathh) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] celseibyte = Base64.getMimeDecoder().decode(readKey(privateKeyPath(pathh)));
+        byte[] celseibyte = Base64.getMimeDecoder().decode(readKey(destination + privateKeyPath(pathh)));
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(celseibyte);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PrivateKey privateKey = kf.generatePrivate(spec);

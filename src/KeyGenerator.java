@@ -1,26 +1,15 @@
-
-import java.io.*;
-import java.math.BigInteger;
-import java.nio.Buffer;
-import java.security.*;
-import java.security.spec.RSAPrivateCrtKeySpec;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintWriter;
-import java.io.StringWriter;
-import sun.security.rsa.RSAPrivateCrtKeyImpl;
+import java.security.*;
+import java.util.Base64;
 
 
 public class KeyGenerator {
     static final String KEY_ALGORITHM = "RSA";
     static final int KEY_LENGTH = 1024;
     public static String lokacioni = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
-
-
-
-
 
 
 
@@ -58,7 +47,7 @@ public class KeyGenerator {
             if(ekziston == true){
                 System.out.println(filename + " Ekziston paraprakisht");
             }else if(ekziston == false){
-                PrintWriter writer = new PrintWriter(filename);
+                PrintWriter writer = new PrintWriter(lokacioni + filename);
                 writer.write(text);
                 System.out.println(filename + " Eshte regjistruar");
                 writer.flush();

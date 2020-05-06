@@ -1,18 +1,14 @@
-import java.io.*;
-import java.security.*;
-import java.security.spec.*;
-import java.util.Base64;
-import java.util.Base64;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 public class Write {
 
@@ -20,7 +16,7 @@ public class Write {
     public static SecretKey key;
     public static IvParameterSpec IV;
 
-
+    public static String Destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
 
 
 
@@ -29,7 +25,7 @@ public class Write {
         String marresiPubKey = "RSA\\" + marresi + ".pub.pem";
        String marresiU =  Base64.getEncoder().encodeToString(marresi.getBytes("UTF-8"));
        String msgDesEncrypt = desEncrypt(msg);
-        String secretEncoded  = encodewithPub(generatePublicKey(readKey(marresiPubKey)),key);
+        String secretEncoded  = encodewithPub(generatePublicKey(readKey( Destination + marresiPubKey)),key);
        String IVBase64 = Base64.getEncoder().encodeToString(IV.getIV());
        String finalen =marresiU + "." + IVBase64 + "." + secretEncoded + "." + msgDesEncrypt;
 

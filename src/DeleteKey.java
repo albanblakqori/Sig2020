@@ -2,9 +2,10 @@ import java.io.File;
 public class DeleteKey {
 
     public DeleteKey(String filename,String tipi){
-       File myObj = new File(filename);
+        String lokacioni = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
+       File myObj = new File(lokacioni + filename);
        if(myObj.delete()){
-           System.out.println("Eshte larguar celesi" +tipi + myObj.getName());
+           System.out.println("Eshte larguar celesi " +tipi + " " + myObj.getName());
 
 
        }else {

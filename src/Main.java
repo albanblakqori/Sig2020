@@ -37,9 +37,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception, FileNotFoundException,InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
-        String comm = "write";
+        String comm = "read";
         String type = "private";
-        String marresi = "alban";
+        String marresi = "test";
         String  imp_path = "C:\\Users\\Hp\\Desktop\\toimportfrom\\albani_importuar.pem";
         String imp_emri = "albani_importuar";
         Scanner in = new Scanner(System.in);
@@ -83,7 +83,18 @@ public class Main {
 
         }else if(comm == "write"){
 
-            System.out.println(Write.write(marresi,"Hello Firend"));
+            System.out.println(Write.write(marresi,"Hello i Nderuari test"));
+
+
+
+        }else if(comm == "read"){
+            String str = "YWxiYW4=.OC93JVQNX+E=.vTwgyQ1GYzEdtbHEQ89tDLA3aJ9Ib2sAC32B/g7BP8lfPOs20hjPXGPv1cNsDK3P8r9NDB/KCAePJqZY88wAXEUvJFVbxmfCU68ntRdpfJ+3PBHhmMyMMJONS9/Nlw4NCCfg1/3MCFFdVutwshO4QpyZuQZA8fsXeIF+oQF2UeQ=.jQDaoVt08dIGryWtEImWqA==";
+            String str1 = "dGVzdA==.RWe3lWmDsCE=.Pb8eOOl38JWicIWUBfXEDsH7X0fj7K1wSqKE7cAs4TWP2V5Txds5TGFQkxUqXbAMr0BFkbfAFghecIR4ebTWUqJQz77dygxWO17+ujbu6K91EqgLIegBYx15dKLqQShp+Ts2CUTMAKDiz/P9b6McefdwhdfRE6Ki7ESMZwGd0io=.o5WjVI+I8Z50qGXNSeJ3TUiDQhex8TRN";
+             Read obj = new Read(str1);
+             PrivateKey pk = obj.privateKey(obj.name);
+             byte[] celesiSekret = obj.decodeRSA(pk,obj.encryptedKey);
+             String decodedDes = obj.decryptDes(celesiSekret, obj.msg1);
+             obj.printAll(decodedDes);
 
 
 

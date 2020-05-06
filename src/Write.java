@@ -1,9 +1,7 @@
 import java.io.*;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.spec.*;
 import java.util.Base64;
-import java.security.spec.AlgorithmParameterSpec;
 import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
@@ -85,8 +83,8 @@ public class Write {
 
 
     public static PublicKey generatePublicKey(String celsei) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] celseibyte = Base64.getDecoder().decode(celsei);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(celseibyte);
+        byte[] celseibyte = Base64.getMimeDecoder().decode(celsei);
+         X509EncodedKeySpec spec  = new X509EncodedKeySpec(celseibyte);
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey publicKey = kf.generatePublic(spec);
         return publicKey;

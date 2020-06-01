@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 import java.util.Scanner;
 
 
@@ -15,10 +16,19 @@ public class Main {
     public static void main(String[] args) throws Exception, FileNotFoundException,InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
 
+        /*byte[] decode = Base64.getDecoder().decode("cGVyc2hlbmRldGpl");
+        String str = new String(decode);
+        System.out.println(str);
+*/
+        
         String comm = args[0];
+
 
         switch (comm){
             case "create-user":
+                java.io.Console console = System.console();
+                String pass = new String(console.readPassword("Passowrd: "));
+
                 String name = args[1];
                 String privateloc = "RSA\\" + name + ".pem";
                 String publicloc = "RSA\\" + name + ".pub.pem";
@@ -28,6 +38,9 @@ public class Main {
                 PublicKey publicKey = keyPair.getPublic();
                 KeyGenerator.writeFile(KeyGenerator.getPrivateKeyAsEncoded(privateKey),privateloc);
                 KeyGenerator.writeFile(KeyGenerator.getPublicKeyAsEncoded(publicKey),publicloc);
+                Password save = new Password(name,pass);
+                save.WritePass(name,pass);
+
                 break;
             case "delete-user":
                 String nameToDelete = args[1];

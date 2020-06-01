@@ -23,7 +23,7 @@ public class Password {
     void WritePass(String Emri, String Pasi) throws IOException, NoSuchAlgorithmException {
         File myobj = new File(destination + "\\Password\\" + Emri + ".txt");
         FileWriter mywriter = new FileWriter(destination + "\\Password\\" + Emri + ".txt");
-        mywriter.write("User:" + Emri + "\n" + "Pass:" + hashedPassword(Pasi) + "\n" + "Salti: " + salt);
+        mywriter.write("User: " + Emri + ",\n" + "Pass: " + hashedPassword(Pasi) + ",\n" + "Salt: " + salt);
         mywriter.close();
     }
 

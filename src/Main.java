@@ -46,8 +46,10 @@ public class Main {
                 String nameToDelete = args[1];
                 String privateloctoDelete = "RSA\\" + nameToDelete + ".pem";
                 String publicloctoDelete = "RSA\\" + nameToDelete + ".pub.pem";
+                String Password = "Password\\" + nameToDelete + ".txt";
                 new DeleteKey(privateloctoDelete,"Privat");
                 new DeleteKey(publicloctoDelete,"Publik");
+                new DeleteKey(Password,"Password");
                 break;
             case  "export-key":
                 String type = args[1];
@@ -121,6 +123,21 @@ public class Main {
                 }
 
                break;
+            case "login":
+                java.io.Console console1 = System.console();
+                String passi = new String(console1.readPassword("Passowrd: "));
+                String emri = args[1];
+                Login obj = new Login();
+                obj.readFiles(emri);
+                boolean user = obj.CheckUser(emri);
+                String[] parts = obj.txt.toString().split(",");
+                if(user){
+
+                    obj.checkPass(parts,passi);
+                }
+
+
+                break;
             default:
                 System.out.println("Komanda nuk ekziston");
         }

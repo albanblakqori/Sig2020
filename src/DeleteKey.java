@@ -5,7 +5,13 @@ public class DeleteKey {
         String lokacioni = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
        File myObj = new File(lokacioni + filename);
        if(myObj.delete()){
-           System.out.println("Eshte larguar celesi " +tipi + " " + myObj.getName());
+           if(tipi == "Publik" || tipi == "Privat"){
+
+               System.out.println("Eshte larguar celesi " +tipi + " " + myObj.getName());
+           }
+           else if(tipi == "Password"){
+               System.out.println("Eshte larguar passwordi i " + myObj.getName() );
+           }
 
 
        }else {

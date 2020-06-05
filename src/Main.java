@@ -6,16 +6,27 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+ /*import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
-
-
+import io.jsonwebtoken.Jwts;
+*/
 
 public class Main {
 
     public static void main(String[] args) throws Exception, FileNotFoundException,InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
+        /* Instant now = Instant.now();
+         String jwt = Jwts.builder().setSubject("Alban Blakqor").
+                 setAudience("video demo").
+                 setIssuedAt(Date.from(now)).
+                 setExpiration(Date.from(now.plus(1, ChronoUnit.MINUTES))).
+                 compact();
 
+         //System.out.println(jwt);
         /*byte[] decode = Base64.getDecoder().decode("cGVyc2hlbmRldGpl");
         String str = new String(decode);
         System.out.println(str);
@@ -28,18 +39,29 @@ public class Main {
             case "create-user":
                 java.io.Console console = System.console();
                 String pass = new String(console.readPassword("Passowrd: "));
+                if(pass.length()>6 && (pass.matches("(.*[0-9].*)") || pass.matches("(.*[,~,!,@,#,$,%,^,&,*,(,),-,_,=,+,[,{,],},|,;,:,<,>,/,?].*$)"))){
+                    String verifyPass = new String(console.readPassword("Password again: "));
+                    if(pass.equals(verifyPass) ){
+                        String name = args[1];
+                        String privateloc = "RSA\\" + name + ".pem";
+                        String publicloc = "RSA\\" + name + ".pub.pem";
 
-                String name = args[1];
-                String privateloc = "RSA\\" + name + ".pem";
-                String publicloc = "RSA\\" + name + ".pub.pem";
+                        KeyPair keyPair = KeyGenerator.createKeyPair(2048);
+                        PrivateKey privateKey = keyPair.getPrivate();
+                        PublicKey publicKey = keyPair.getPublic();
+                        KeyGenerator.writeFile(KeyGenerator.getPrivateKeyAsEncoded(privateKey),privateloc);
+                        KeyGenerator.writeFile(KeyGenerator.getPublicKeyAsEncoded(publicKey),publicloc);
+                        Password save = new Password(name,pass);
+                        save.WritePass(name,pass);
+                    }else{
+                        System.out.println("Passwordi nuk perputhet!");
+                    }
+                }else{
+                    System.out.println("Passi duhet te jet me i gjate se 6 dhe duhet te permbaje numra ose simbole");
+                }
 
-                KeyPair keyPair = KeyGenerator.createKeyPair(1024);
-                PrivateKey privateKey = keyPair.getPrivate();
-                PublicKey publicKey = keyPair.getPublic();
-                KeyGenerator.writeFile(KeyGenerator.getPrivateKeyAsEncoded(privateKey),privateloc);
-                KeyGenerator.writeFile(KeyGenerator.getPublicKeyAsEncoded(publicKey),publicloc);
-                Password save = new Password(name,pass);
-                save.WritePass(name,pass);
+
+
 
                 break;
             case "delete-user":
@@ -47,9 +69,11 @@ public class Main {
                 String privateloctoDelete = "RSA\\" + nameToDelete + ".pem";
                 String publicloctoDelete = "RSA\\" + nameToDelete + ".pub.pem";
                 String Password = "Password\\" + nameToDelete + ".txt";
+                String Token = "Tokens\\" + nameToDelete + ".txt";
                 new DeleteKey(privateloctoDelete,"Privat");
                 new DeleteKey(publicloctoDelete,"Publik");
                 new DeleteKey(Password,"Password");
+                new DeleteKey(Token,"Token");
                 break;
             case  "export-key":
                 String type = args[1];
@@ -133,9 +157,19 @@ public class Main {
                 String[] parts = obj.txt.toString().split(",");
                 if(user){
 
-                    obj.checkPass(parts,passi);
-                }
+                   if(obj.checkPass(parts,passi)){
+                       System.out.println("ju jeni loguar");
+                     String tokeni =  Tokens.createToken(emri);
 
+                      System.out.println(tokeni);
+                      System.out.println("---------------------------------- \n");
+
+                   }
+                }
+                break;
+            case "status":
+                String tokeni = args[1];
+                Tokens.veirfyToken(tokeni);
 
                 break;
             default:

@@ -11,6 +11,8 @@ public class DeleteKey {
            }
            else if(tipi == "Password"){
                System.out.println("Eshte larguar passwordi i " + myObj.getName() );
+           }else if(tipi == "Token"){
+               System.out.println("Eshte larguar tokeni " + myObj.getName());
            }
 
 

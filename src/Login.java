@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
-
+//import io.jsonwebtoken.Jwts;
 public class Login {
+
 
     StringBuffer txt = new StringBuffer();
     //String txtToString = txt.toString();
@@ -38,7 +40,7 @@ public class Login {
     }
 
 
-    public void checkPass(String[] parts,String pasi) throws NoSuchAlgorithmException {
+    public boolean checkPass(String[] parts,String pasi) throws NoSuchAlgorithmException {
 
         String saltedPas =pasi +  parts[2];
 
@@ -46,9 +48,12 @@ public class Login {
 
         if(hashed.equals(parts[1])){
             System.out.println("Ju lejohet hyrja ");
+            return true;
         }else{
             System.out.println("Ju nuk mund te hyni");
+            return false;
         }
+
     }
 
 
@@ -60,8 +65,16 @@ public class Login {
         StringBuffer sb = new StringBuffer();
         for (byte b1 : b) {
             sb.append(Integer.toHexString(b1 & 0xff).toString());
-        }
-        return sb.toString();
+        }return sb.toString();
+
     }
+
+
+    public String createToken(String emri) throws IOException {
+        Write.readKey(emri);
+
+       return emri;
+    }
+
 
 }

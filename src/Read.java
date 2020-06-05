@@ -64,7 +64,7 @@ public class Read {
 
     }
 
-    public PrivateKey privateKey(String pathh) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    public  PrivateKey privateKey(String pathh) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] celseibyte = Base64.getMimeDecoder().decode(readKey(destination + privateKeyPath(pathh)));
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(celseibyte);
         KeyFactory kf = KeyFactory.getInstance("RSA");

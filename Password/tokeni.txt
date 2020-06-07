@@ -1,3 +1,0 @@
-User: tokeni,
-Pass: 54aa65fb2f9cb45e07aeb7c6def5994,
-Salt: N+gu4blWphhKYip6pI7oBBbBeIg=

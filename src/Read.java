@@ -20,7 +20,7 @@ public class Read {
     String sender;
     byte[] signature;
     String destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
-    boolean paToken = false;
+    boolean paNenshkrim = false;
 
     public Read(String ms) throws UnsupportedEncodingException {
         String[] parts = ms.split("\\.");
@@ -31,7 +31,7 @@ public class Read {
         if(parts.length == 6) {
             this.sender = new String(Base64.getDecoder().decode(parts[4]));
             this.signature = Base64.getDecoder().decode(parts[5]);
-            paToken = true;
+            paNenshkrim = true;
         }
     }
 
@@ -57,7 +57,7 @@ public class Read {
         System.out.println("---------------------------");
         System.out.println("Marresi:  " + name);
         System.out.println("Mesazhi: " + mesazhi);
-        if(paToken){
+        if(paNenshkrim){
             System.out.println("Derguesi: " + this.sender);
             if(verifySig()){
                 System.out.println("Nenshkrimi : Valid");

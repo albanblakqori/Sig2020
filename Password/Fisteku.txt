@@ -1,0 +1,3 @@
+User: Fisteku,
+Pass: 1ec6becba5a65466ff81ec25cd9f2d35,
+Salt: DwgfYa6BTlGax7lWbLa5YQcAc+A=

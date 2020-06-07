@@ -1,3 +1,0 @@
-User: Test,
-Pass: b8d7bdf4c4a8d19752c89851aa8f9a,
-Salt: 2g622nOkJ0t/1MYNgvexdfGc+iI=

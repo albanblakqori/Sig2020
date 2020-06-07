@@ -111,7 +111,7 @@ public class Main {
 
                 break;
             case "write-message":
-                //try{
+                try{
                    String token1 ;
                    boolean valid = false;
                     String marresi = args[1];
@@ -131,15 +131,15 @@ public class Main {
                     }
 
 
-               // }catch (IOException e){
-                //    System.out.println("Gabim celesi nuk ekziston");
-                //}catch (ArrayIndexOutOfBoundsException e){
-                 //   System.out.println("Gabim ne argumente");
-               // }
+                }catch (IOException e){
+                    System.out.println("Gabim celesi nuk ekziston");
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabim ne argumente");
+                }
 
                 break;
             case "read-message":
-               // try{
+                try{
                     String encryptedMSg = args[1];
 
                     Read obj5 = new Read(encryptedMSg);
@@ -148,36 +148,46 @@ public class Main {
                     byte[] celesiSekret = obj5.decodeRSA(pk,obj5.encryptedKey);
                     String decodeDes = obj5.decryptDes(celesiSekret,obj5.msg1);
                     obj5.printAll(decodeDes);
-                //}catch (IOException e){
-                 //   System.out.println("Gabim celesi nuk ekziston" );
-               // }catch (ArrayIndexOutOfBoundsException e){
-                //    System.out.println("Gabim ne argumenet");
-               // }
+                }catch (IOException e){
+                    System.out.println("Gabim celesi nuk ekziston" );
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabim ne argumenet");
+                }
 
                break;
             case "login":
-                java.io.Console console1 = System.console();
-                String passi = new String(console1.readPassword("Passowrd: "));
-                String emri = args[1];
-                Login obj = new Login();
-                obj.readFiles(emri);
-                boolean user = obj.CheckUser(emri);
-                String[] parts = obj.txt.toString().split(",");
-                if(user){
+                try{
+                    java.io.Console console1 = System.console();
+                    String passi = new String(console1.readPassword("Passowrd: "));
+                    String emri = args[1];
+                    Login obj = new Login();
+                    obj.readFiles(emri);
+                    boolean user = obj.CheckUser(emri);
+                    String[] parts = obj.txt.toString().split(",");
+                    if(user){
 
-                   if(obj.checkPass(parts,passi)){
+                        if(obj.checkPass(parts,passi)){
 
-                     String tokeni =  Tokens.createToken(emri);
-                       System.out.println("---------------------------------- \n");
-                      System.out.println(tokeni);
+                            String tokeni =  Tokens.createToken(emri);
+                            System.out.println("---------------------------------- \n");
+                            System.out.println(tokeni);
 
 
-                   }
+                        }
+                    }
+                }catch (IOException e){
+                    System.out.println("Useri nuk egziston");
                 }
+
                 break;
             case "status":
-                String tokeni = args[1];
-                Tokens.veirfyToken(tokeni);
+                try{
+                    String tokeni = args[1];
+                    Tokens.veirfyToken(tokeni);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Gabim ne argumente");
+                }
+
 
                 break;
             default:

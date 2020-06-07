@@ -1,3 +1,5 @@
+//import sun.security.rsa.RSASignature;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -15,7 +17,10 @@ public class Read {
     byte[] encryptedKey;
     byte[] msg1;
     String privateKeyPath;
+    String sender;
+    byte[] signature;
     String destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
+    boolean paToken = false;
 
     public Read(String ms) throws UnsupportedEncodingException {
         String[] parts = ms.split("\\.");
@@ -23,7 +28,22 @@ public class Read {
         this.iv = Base64.getDecoder().decode(parts[1]);
         this.encryptedKey = Base64.getDecoder().decode(parts[2]);
         this.msg1 = Base64.getDecoder().decode(parts[3]);
+        if(parts.length == 6) {
+            this.sender = new String(Base64.getDecoder().decode(parts[4]));
+            this.signature = Base64.getDecoder().decode(parts[5]);
+            paToken = true;
+        }
+    }
 
+
+
+    public boolean verifySig() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException, SignatureException {
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initVerify(Write.generatePublicKey(Write.readKey(Write.Destination + "RSA\\" + sender +".pub.pem")));
+        //byte[] data = this.msg1;
+        signature.update(msg1);
+        boolean verified = signature.verify(this.signature);
+        return verified;
     }
 
     public String privateKeyPath(String name) {
@@ -33,9 +53,19 @@ public class Read {
 
     }
 
-    public void printAll(String mesazhi) {
+    public void printAll(String mesazhi) throws InvalidKeySpecException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, IOException {
+        System.out.println("---------------------------");
         System.out.println("Marresi:  " + name);
         System.out.println("Mesazhi: " + mesazhi);
+        if(paToken){
+            System.out.println("Derguesi: " + this.sender);
+            if(verifySig()){
+                System.out.println("Nenshkrimi : Valid");
+            }else{
+                System.out.println("Nuk eshte valid");
+            }
+        }
+
 
     }
 

@@ -19,32 +19,7 @@ public class Tokens {
    public static String  destination = "C:\\Users\\Hp\\IdeaProjects\\Sig2020\\";
   public static  String privateKeyPath;
 
-   /* public static void main(String[] args) throws NoSuchAlgorithmException {
 
-        KeyPair kp = KeyGenerator.createKeyPair(2048);
-        PrivateKey privateKey = kp.getPrivate();
-        PublicKey publicKey = kp.getPublic();
-
-        String publicKeyEncoded = KeyGenerator.getPublicKeyAsEncoded(publicKey);
-        String privateKeyEncoded = KeyGenerator.getPrivateKeyAsEncoded(privateKey);
-        System.out.println(publicKeyEncoded + " ================");
-
-
-        System.out.println(privateKeyEncoded);
-
-        Instant now = Instant.now();
-
-        String jwt = Jwts.builder().setSubject("Alban Blakqori")
-                .setAudience("video demo")
-                .claim("1d20",new Random().nextInt(20)  + 1)
-                .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(1, ChronoUnit.MINUTES)))
-                .signWith(SignatureAlgorithm.RS256,privateKey)
-                .compact();
-
-        System.out.println(jwt);
-
-    }*/
 
     public static PrivateKey privateKey(String pathh) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] celseibyte = Base64.getMimeDecoder().decode(readKey(destination + privateKeyPath(pathh)));
@@ -106,7 +81,7 @@ public class Tokens {
        String jwt = Jwts.builder()
                .setSubject(emri)
                .setIssuedAt(Date.from(now))
-               .setExpiration(Date.from(now.plus(1,ChronoUnit.MINUTES)))
+               .setExpiration(Date.from(now.plus(20,ChronoUnit.MINUTES)))
                .signWith(SignatureAlgorithm.RS256,privateKey)
                .compact();
       writeToken(jwt,emri);
@@ -123,28 +98,36 @@ public class Tokens {
     }
 
 
-    public static void veirfyToken(String tokeni) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+    public static boolean veirfyToken(String tokeni) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
   try {
             String[] parts = tokeni.split("\\.");
-
             String tokenWithoutSig = parts[0] +"."+ parts[1] + "\\.";
-            //System.out.println(parts[0]);
-            //System.out.println("0------------------");
-            //System.out.println(parts[1] + "\n" + "0000000000000000000000000000000000000");
-           System.out.println(tokenWithoutSig);
-     Jwt<Header, Claims> result =  Jwts.parser().parseClaimsJwt(tokenWithoutSig);
-         //
-          System.out.println(result.getBody().getSubject());
-       Jws<Claims> result1 = Jwts.parser()
+          //  System.out.println(tokenWithoutSig);
+            Jwt<Header, Claims> result =  Jwts.parser().parseClaimsJwt(tokenWithoutSig);
+           // System.out.println(result.getBody().getSubject());
+            Jws<Claims> result1 = Jwts.parser()
                     .setSigningKey(generatePublicKey(result.getBody().getSubject()))
                     .parseClaimsJws(tokeni);
+            System.out.println("--------------------------------");
             System.out.println("User: " + result.getBody().getSubject());
             System.out.println("Vlaid : po" );
             System.out.println("Skadimi: " +result.getBody().getExpiration());
 
+            return true;
       }catch (Exception e){
          System.out.println("Tokeni nuk eshte valid");
+         return  false;
     }
+    }
+
+    public static String getTokenName(String tokeni){
+
+        String[] parts = tokeni.split("\\.");
+        String tokenWithoutSig = parts[0] +"."+ parts[1] + "\\.";
+        //System.out.println(tokenWithoutSig);
+        Jwt<Header, Claims> result =  Jwts.parser().parseClaimsJwt(tokenWithoutSig);
+        String emri = result.getBody().getSubject();
+       return  emri;
     }
 
 

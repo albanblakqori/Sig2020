@@ -47,7 +47,7 @@ public class Login {
         String hashed = hashedPassword(saltedPas);
 
         if(hashed.equals(parts[1])){
-            System.out.println("Ju lejohet hyrja ");
+
             return true;
         }else{
             System.out.println("Ju nuk mund te hyni");

@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
  /*import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
@@ -19,18 +20,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception, FileNotFoundException,InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
-        /* Instant now = Instant.now();
-         String jwt = Jwts.builder().setSubject("Alban Blakqor").
-                 setAudience("video demo").
-                 setIssuedAt(Date.from(now)).
-                 setExpiration(Date.from(now.plus(1, ChronoUnit.MINUTES))).
-                 compact();
 
-         //System.out.println(jwt);
-        /*byte[] decode = Base64.getDecoder().decode("cGVyc2hlbmRldGpl");
-        String str = new String(decode);
-        System.out.println(str);
-*/
+
         
         String comm = args[0];
 
@@ -120,31 +111,48 @@ public class Main {
 
                 break;
             case "write-message":
-                try{
+                //try{
+                   String token1 ;
+                   boolean valid = false;
                     String marresi = args[1];
                     String msg = args[2];
-                    System.out.println(Write.write(marresi,msg));
-                }catch (IOException e){
-                    System.out.println("Gabim celesi nuk ekziston");
-                }catch (ArrayIndexOutOfBoundsException e){
-                    System.out.println("Gabim ne argumente");
-                }
+                    if(args.length==4){
+                       token1 = args[3];
+                       valid =  Tokens.veirfyToken(token1);
+                       if(valid){
+                           System.out.println("-------------------------");
+                           String emri = Tokens.getTokenName(token1);
+                         //  System.out.println(emri + " e paska qishtu");
+                           System.out.println( Write.write(marresi,msg,emri));
+                       }
+                    }else{
+
+                        System.out.println(Write.write(marresi,msg));
+                    }
+
+
+               // }catch (IOException e){
+                //    System.out.println("Gabim celesi nuk ekziston");
+                //}catch (ArrayIndexOutOfBoundsException e){
+                 //   System.out.println("Gabim ne argumente");
+               // }
 
                 break;
             case "read-message":
-                try{
+               // try{
                     String encryptedMSg = args[1];
-                    Read obj = new Read(encryptedMSg);
-                    String emri = obj.name;
-                    PrivateKey pk = obj.privateKey(obj.name);
-                    byte[] celesiSekret = obj.decodeRSA(pk,obj.encryptedKey);
-                    String decodeDes = obj.decryptDes(celesiSekret,obj.msg1);
-                    obj.printAll(decodeDes);
-                }catch (IOException e){
-                    System.out.println("Gabim celesi nuk ekziston" );
-                }catch (ArrayIndexOutOfBoundsException e){
-                    System.out.println("Gabim ne argumenet");
-                }
+
+                    Read obj5 = new Read(encryptedMSg);
+                  //  String emri = obj5.name;
+                    PrivateKey pk = obj5.privateKey(obj5.name);
+                    byte[] celesiSekret = obj5.decodeRSA(pk,obj5.encryptedKey);
+                    String decodeDes = obj5.decryptDes(celesiSekret,obj5.msg1);
+                    obj5.printAll(decodeDes);
+                //}catch (IOException e){
+                 //   System.out.println("Gabim celesi nuk ekziston" );
+               // }catch (ArrayIndexOutOfBoundsException e){
+                //    System.out.println("Gabim ne argumenet");
+               // }
 
                break;
             case "login":
@@ -158,11 +166,11 @@ public class Main {
                 if(user){
 
                    if(obj.checkPass(parts,passi)){
-                       System.out.println("ju jeni loguar");
-                     String tokeni =  Tokens.createToken(emri);
 
+                     String tokeni =  Tokens.createToken(emri);
+                       System.out.println("---------------------------------- \n");
                       System.out.println(tokeni);
-                      System.out.println("---------------------------------- \n");
+
 
                    }
                 }

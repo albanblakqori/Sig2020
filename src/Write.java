@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ser.Serializers;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -28,30 +30,35 @@ public class Write {
         String secretEncoded  = encodewithPub(generatePublicKey(readKey( Destination + marresiPubKey)),key);
        String IVBase64 = Base64.getEncoder().encodeToString(IV.getIV());
        String finalen =marresiU + "." + IVBase64 + "." + secretEncoded + "." + msgDesEncrypt;
-
        // String secretKeyBase64 = Base64.getEncoder().encodeToString(key.getEncoded());
 
-
-
-
        return finalen;
+    }
 
+    public static String write(String marresi,String msg,String emri) throws NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, IOException, InvalidKeySpecException, SignatureException {
+        String marresiPubKey = "RSA\\" + marresi + ".pub.pem";
+        String sender = Base64.getEncoder().encodeToString(emri.getBytes());
+        String marresiU =  Base64.getEncoder().encodeToString(marresi.getBytes("UTF-8"));
+        String msgDesEncrypt = desEncrypt(msg);
+        String secretEncoded  = encodewithPub(generatePublicKey(readKey( Destination + marresiPubKey)),key);
+        String IVBase64 = Base64.getEncoder().encodeToString(IV.getIV());
+        String signature = encodewithPriv(emri,msgDesEncrypt);
+        String finalen =marresiU + "." + IVBase64 + "." + secretEncoded + "." + msgDesEncrypt + "." + sender + "." + signature;
+        // String secretKeyBase64 = Base64.getEncoder().encodeToString(key.getEncoded());
 
+        return finalen;
     }
 
 
     public static String desEncrypt(String msg) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-
         SecureRandom random = new SecureRandom();
         random.nextBytes(iv);
-
         key = KeyGenerator.getInstance("DES").generateKey();
         IV = new IvParameterSpec(iv);
         Cipher encryptCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
         encryptCipher.init(Cipher.ENCRYPT_MODE,key,IV);
         byte[] encryptedMsg = encryptCipher.doFinal(msg.getBytes());
         return Base64.getEncoder().encodeToString(encryptedMsg);
-
     }
 
 
@@ -72,7 +79,6 @@ public class Write {
         publicKey = publicKey.replaceAll("-----BEGIN PUBLIC KEY-----", "");
         publicKey = publicKey.replaceAll("-----END PUBLIC KEY-----", "");
         return publicKey;
-
     }
 
 
@@ -84,7 +90,6 @@ public class Write {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey publicKey = kf.generatePublic(spec);
         return publicKey;
-
     }
 
 
@@ -92,17 +97,27 @@ public class Write {
 
     public static String encodewithPub(PublicKey publickey, SecretKey secretKey) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, publickey);
         cipher.update(secretKey.getEncoded());
         byte[] finalCipher = cipher.doFinal();
         String encodedRSA = Base64.getEncoder().encodeToString(finalCipher);
         return encodedRSA;
-
     }
 
+    public static String encodewithPriv(String emri,String toSig) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException, SignatureException {
+        Signature sig = Signature.getInstance("SHA256withRSA");
+        PrivateKey privateKey =Tokens.privateKey(emri) ;
+        sig.initSign(privateKey);
+        byte[] data = Base64.getDecoder().decode(toSig);
+         sig.update(data);
+         byte[] digSig  = sig.sign();
+         String StringSig = Base64.getEncoder().encodeToString(digSig);
+         return StringSig;
 
+
+    }
 
 
 
